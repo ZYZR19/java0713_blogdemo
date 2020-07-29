@@ -36,13 +36,13 @@ public class ArticleDao {
             //3.执行sql
             int ret = statement.executeUpdate();
             if(ret!=1) {
-                System.out.println("执行插入文章操作失败");
+                System.out.println("插入文章失败喽!");
                 return;
             }
-            System.out.println("执行插入文章操作成功");
+            System.out.println("插入文章成功啦!");
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        }finally {//.释放连接
             DBUtil.close(connection,statement,null);
 
     }
@@ -63,10 +63,10 @@ public class ArticleDao {
             resultSet = statement.executeQuery();
             //4.遍历结果集
             while (resultSet.next()) {
-                //针对每个结果记录,都构造一个对应的aticle对象
+                //针对每个结果记录,都构造一个对应的article对象
                 //此时由于没有从数据库中读content字段,这个字段暂时先不设置
                 Article article = new Article();
-                article.setArticeId(resultSet.getInt("articleId"));
+                article.setArticleId(resultSet.getInt("articleId"));
                 article.setTitle(resultSet.getString("title"));
                 articles.add(article);
             }
@@ -79,7 +79,7 @@ public class ArticleDao {
         return null;
     }
     //3.查看指定文章详情(需要查看正文)
-    public Article selectById(int articId) {
+    public Article selectById(int articleId) {
         //1.建立数据库连接
         Connection connection =DBUtil.getConnection();
         //2.构造sql
@@ -89,14 +89,14 @@ public class ArticleDao {
 
         try {
             statement=connection.prepareStatement(sql);
-            statement.setInt(1,articId);
+            statement.setInt(1,articleId);
             //3.执行sql
             resultSet = statement.executeQuery();
             //4.遍历结果集合
             //由于id是主键 不会重复 预期最后只能查出一条记录
             if (resultSet.next()) {
                 Article article = new Article();
-                article.setArticeId(resultSet.getInt("articleId"));
+                article.setArticleId(resultSet.getInt("articleId"));
                 article.setTitle(resultSet.getString("title"));
                 article.setContent(resultSet.getString("content"));
                 article.setUserId(resultSet.getInt("userId"));
@@ -111,11 +111,11 @@ public class ArticleDao {
         return null;
     }
     //4.删除指定文章(给定文章id来删除))
-    public void delete(int articleId) {
+    public  void delete(int articleId) {
         //1.获取连接
         Connection connection = DBUtil.getConnection();
         //2.拼装sql
-        String sql = "delete from article where srticleId = ?";
+        String sql = "delete from article where articleId = ?";
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(sql);

@@ -8,17 +8,17 @@ package model;
  * Time: 18:40
  */
 public class Article {
-    private int articeId;
+    private int articleId;
     private  String  title;
     private String  content;
     private  int userId;
 
-    public int getArticeId() {
-        return articeId;
+    public int getArticleId() {
+        return articleId;
     }
 
-    public void setArticeId(int articeId) {
-        this.articeId = articeId;
+    public void setArticleId(int articeId) {
+        this.articleId = articeId;
     }
 
     public String getTitle() {
@@ -48,7 +48,7 @@ public class Article {
     @Override
     public String toString() {
         return "Article{" +
-                "articleId=" + articeId +
+                "articleId=" + articleId +
                 ", title='" +title +'\''+
                 ", content='" + content+'\'' +
                 ", userId=" +userId +

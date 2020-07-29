@@ -24,18 +24,22 @@ public class DBUtil {
     //3.jdbc中使用datasource来管理连接
     //dbutil相当于对datasource再包装 datasource每个应用程序只应该有一个实例(单例)
     //单例模式的实现 有饿汉和懒汉 此处使用懒汉模式
-    private static volatile DataSource dataSource = null;
+
+
+    private static volatile DataSource dataSource = null;//唯一的
+    //datasourse的一些属性
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/java0713_blog?characterEncoding=utf-8&useSSL=true";
     private static final String USERNAME="root";
-    private static final String PASSWORD="2222";
-
+    private static final String PASSWORD="823102";
+//创建实例的过程
+    //由于懒汉模式在首次调用时,会发生线程不安全 所以1,加锁 2,双重if判定 3,volatile关键字
     public static DataSource getDataSource() {
         if(dataSource==null) {
-            synchronized (DBUtil.class) {
-                if(dataSource==null) {
+            synchronized (DBUtil.class) {//给类加锁
+                if(dataSource==null) {//首次调用才会线程不安全   双重if判定
                     dataSource = new MysqlDataSource() ;
                     //还需要给DataSourse设置一些属性
-                    ((MysqlDataSource)dataSource).setURL(URL);
+                    ((MysqlDataSource)dataSource).setURL(URL);//向下转型 设置url username password
                     ((MysqlDataSource) dataSource).setUser(USERNAME);
                     ((MysqlDataSource) dataSource).setPassword(PASSWORD);
                 }
@@ -58,8 +62,6 @@ public class DBUtil {
     public static void close(Connection connection, PreparedStatement statement,
                              ResultSet resultSet) {
         try{
-
-
             if(resultSet!=null) {
                 resultSet.close();
             }
